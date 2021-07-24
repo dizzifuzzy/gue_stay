@@ -15,6 +15,7 @@ foreach ($select as $as) {
     $status = $as['status_penginapan'];
     $idka = $as['kategori_penginapan'];
     $harga = $fungsi->rupiah($as['harga_penginapan']);
+    $hargaa = $as['harga_penginapan'];
     $kategori = $crud->getData("SELECT * FROM kategori WHERE id_kategori='$idka'");
     foreach ($kategori as $kategoris) { $idk = $kategoris['kategori_penginapan']; }
     $fasilitas = $crud->getData("SELECT * FROM fasilitas WHERE id_penginapan='$id'");
@@ -203,7 +204,7 @@ foreach ($bank as $bank) {
 								$alama = $_POST['alamat'];
 								$id_tran = rand(10000,90000);
 								$insertrating = $crud->execute("UPDATE `member` SET `nohp_member` = '$hp' , `alamat_member` = '$alamat'  WHERE `member`.`id_member` = $idp;");
-								$inserttransaksi = $crud->execute("INSERT INTO transaksi(id_transaksi,id_member,id_penginapan,tanggal_transaksi,total_harga,status_transaksi,catatan_transaksi) VALUES('$id_tran','$idm', '$idp', '$date','$harga','Belum Lunas','$catatan')");
+								$inserttransaksi = $crud->execute("INSERT INTO transaksi(id_transaksi,id_member,id_penginapan,tanggal_transaksi,total_harga,status_transaksi,catatan_transaksi) VALUES('$id_tran','$idm', '$idp', '$date','$hargaa','Belum Lunas','$catatan')");
 								echo ' <meta http-equiv="Refresh" content="0; url=invoice.php?invoice='.$id_tran.'">';
 							}
 
