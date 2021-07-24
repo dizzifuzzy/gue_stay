@@ -1,0 +1,218 @@
+<?php include_once("config/Crud.php"); include_once("config/conf.php"); $crud = new Crud();session_start();
+$db = new DbConfig();
+$idm = $_SESSION['id'];
+$select = $crud->getData("SELECT * FROM member mb JOIN transaksi tr ON mb.id_member = tr.id_member WHERE mb.id_member='$idm'");
+foreach ($select as $as) { 
+	$nama = $as['nama_member'];
+	$nohp = $as['nohp_member'];
+	$alamat = $as['alamat_member'];
+	$pass = $as['pswd_member'];
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="SPARKER - Premium directory and listings template by Ansonika.">
+    <meta name="author" content="Ansonika">
+    <title><?=nama;?> - Edit Profil</title>
+
+    <!-- Favicons-->
+    <link rel="shortcut icon" href="<?=img;?>favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" type="image/x-icon" href="<?=img;?>apple-touch-icon-57x57-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="<?=img;?>apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="<?=img;?>apple-touch-icon-114x114-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="<?=img;?>apple-touch-icon-144x144-precomposed.png">
+
+    <!-- GOOGLE WEB FONT -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+
+    <!-- BASE CSS -->
+    <link href="<?=css;?>bootstrap.min.css" rel="stylesheet">
+    <link href="<?=css;?>style.css" rel="stylesheet">
+	<link href="<?=css;?>vendors.css" rel="stylesheet">
+	
+	<!-- SPECIFIC CSS -->
+	<link href="<?=css;?>blog.css" rel="stylesheet">
+
+    <!-- YOUR CUSTOM CSS -->
+    <link href="<?=css;?>custom.css" rel="stylesheet">
+</head>
+
+<body>
+	
+	<div id="page">
+		
+		
+	<header class="header_in is_sticky menu_fixed">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-12">
+					<div id="logo">
+						<a href="index.php">
+							<img src="<?=img;?>logo.png" width="165" height="35" alt="" class="logo_sticky">
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-9 col-12">
+					<!-- /top_menu -->
+					<a href="#menu" class="btn_mobile">
+						<div class="hamburger hamburger--spin" id="hamburger">
+							<div class="hamburger-box">
+								<div class="hamburger-inner"></div>
+							</div>
+						</div>
+					</a>
+		<nav id="menu" class="main-menu">
+			<ul>
+				<li><span><a href="index.php">Beranda</a></span></li>
+				<?php if($_SESSION['status']=="user"){?>
+				<li><span><a href="account.php">Akun Saya</a></span></li>
+				<li><a href="logout.php" class="btn_add">Logout</a></li>
+				<?php }elseif($_SESSION['status']=="admin"){?>
+				<li><span><a href="admin">Akun Saya</a></span></li>
+				<li><a href="logout.php" class="btn_add">Logout</a></li>
+				<?php }?>
+			</ul>
+		</nav>
+				</div>
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->		
+	</header>
+	<!-- /header -->
+	
+	<div class="sub_header_in sticky_header">
+		<div class="container">
+			<h1>Akun Saya</h1>
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /sub_header -->
+		
+	<main>
+		<div class="container margin_60_35">
+			<div class="row">
+				<div class="col-lg-9">
+					<div class="row">
+						<div class="col-md-12">
+							<article class="blog">
+    <div class="box_general padding_bottom">
+      <div class="header_box version_2">
+        <h2><i class="fa fa-file"></i>Edit Profil</h2>
+        <hr>
+      </div>
+      <form method="post" enctype="multipart/form-data">
+      <?php 
+      if($_POST['simpan']){
+      	$namam = $_POST['nama'];
+      	$nohpm = $_POST['nohp'];
+      	$alamatm = $_POST['alamat'];
+      	$simpan = $crud->execute("UPDATE `member` SET `nama_member` = '$namam', `nohp_member` = '$nohpm', `alamat_member` = '$alamatm', WHERE `member`.`id_member` = $idm;");
+      	echo "Profil berhasil di ubah.";
+      }
+      ?>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Nama</label>
+            <input type="text" class="form-control" name="nama" value="<?=$nama;?>">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Nomor Hp</label>
+            <input type="text" class="form-control" name="nohp" value="<?=$nohp;?>">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Alamat</label>
+            <textarea type="text" class="form-control" name="alamat"><?=$alamat;?></textarea>
+          </div>
+        </div>
+    <p><input type="submit" name="simpan" class="btn_1 rounded add_top_30" value="Simpan"></p>
+    </form>
+    </div>
+							</article>
+							<article class="blog">
+    <div class="box_general padding_bottom">
+      <div class="header_box version_2">
+        <h2><i class="fa fa-file"></i>Ubah Password</h2>
+        <hr>
+      </div>
+      <form method="post" enctype="multipart/form-data">
+      <?php 
+      if($_POST['pass']){
+      	$passl = $_POST['passlama'];
+      	$passb = $_POST['passbaru'];
+      	if($passl<>$pass){
+      		echo "Password lama anda tidak sesuai dengan yang terdaftar di database kami.";
+      	}else{
+      		$simpan = $crud->execute("UPDATE `member` SET `pswd_member` = '$passb' WHERE `member`.`id_member` = $idm;");
+      		echo "Password Berhasil di ubah.";
+      	}
+      }
+      ?>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Password Lama</label>
+            <input type="password" class="form-control" name="passlama" placeholder="">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Password Baru</label>
+            <input type="password" class="form-control" name="passbaru" placeholder="">
+          </div>
+        </div>
+    	<p><input type="submit" name="pass" class="btn_1 rounded add_top_30" value="Simpan"></p>
+    </form>
+    </div>
+							</article>
+							<!-- /article -->
+						</div>
+					</div>
+					
+				</div>
+				<!-- /col -->
+
+				<aside class="col-lg-3">
+					<div class="widget">
+						<div class="widget-title">
+							<h4>Menu</h4>
+						</div>
+						<ul class="cats">
+							<li><a href="edit.php">Edit Profil</a></li>
+							<li><a href="riwayat.php">Riwayat Pemesanan</span></a></li>
+						</ul>
+					</div>
+				</aside>
+				<!-- /aside -->
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</main>
+	<!--/main-->
+	
+<?php include "footer.phtml";?>
+
+	<!--/footer-->
+	</div>
+	<!-- page -->
+	
+	<div id="toTop"></div><!-- Back to top button -->
+	
+	<!-- COMMON SCRIPTS -->
+    <script src="<?=js;?>common_scripts.js"></script>
+	<script src="<?=js;?>functions.js"></script>
+	<script src="<?=assets;?>validate.js"></script>
+	<script src="admin/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="admin/vendor/datatables/dataTables.bootstrap4.js"></script>
+  
+</body>
+</html>
